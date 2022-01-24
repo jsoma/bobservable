@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{name}}</title>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+  <body>
+    <div class="container">
+      <h1>{{name}}</h1>
+      <p>Adapted from <a href="https://observablehq.com/{{name}}">https://observablehq.com/{{name}}</a></p>
+      <iframe sandbox="allow-popups allow-scripts allow-forms allow-same-origin" src="raw/index.html" marginwidth="0" marginheight="0" scrolling="no">
+      </iframe>
+      {% for file in files %}
+          <div class="file">
+          <h2>{{ file.name }}</h2>
+          {% if file.type == 'text' %}
+              <pre><code class="language-{{ file.extension }}">{{ file.contents }}</code></pre>
+          {% elif file.type == 'image' %}
+              <img src="raw/{{ file.name }}" />
+          {% endif %}
+          </div>
+      {% endfor %}
+    </div>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+  </body>
+</html>
