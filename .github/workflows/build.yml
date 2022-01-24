@@ -19,4 +19,4 @@ jobs:
       - name: Run the build script
         run: python build.py
       - name: Push to GitHub Pages
-        run: ghp-import
+        run: ghp-import -n -p -f docs
