@@ -1,0 +1,10 @@
+
+<a href="https://github.com/jsoma/bobservable/issues/new" class="page-request">Request this page</a>
+<script type="text/javascript">
+    window.addEventListener("load", function() {
+        const link = document.querySelector(".page-request");
+        let href = link.getAttribute('href');
+        href += `?title=Page request: ${window.location.pathname}`;
+        link.setAttribute('href', href);
+    })
+</script>
