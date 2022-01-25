@@ -6,10 +6,21 @@
 </head>
   <body>
     <div class="container">
-      <h1>{{name}}</h1>
+      <h1>
+        {% if title %}
+          {{ title }}
+        {% else %}
+          {{ name }}
+        {% endif %}
+      </h1>
       <p>Adapted from <a href="https://observablehq.com/{{name}}">https://observablehq.com/{{name}}</a></p>
       <iframe sandbox="allow-popups allow-scripts allow-forms allow-same-origin" src="raw/index.html" marginwidth="0" marginheight="0" scrolling="yes">
       </iframe>
+      {% if readme %}
+        <div class="readme">
+          {{ readme | safe }}
+        </div>
+      {% endif %}
       {% for file in files %}
           <div class="file">
           <h2>{{ file.name }}</h2>

@@ -2,6 +2,8 @@ from pathlib import Path
 import mimetypes
 from jinja2 import Template
 import shutil
+import markdown
+import frontmatter
 
 content_dir = Path('./content')
 static_dir = Path('./static')
@@ -15,6 +17,8 @@ with open('page.html') as f:
     template = Template(f.read(), autoescape=True)
 
 for dir in dirs:
+    readme = None
+    title = None
     paths = list(dir.glob('[!.]*'))
 
     files = []
@@ -28,9 +32,15 @@ for dir in dirs:
 
         shutil.copy(path, raw_dir)
 
-        if guess[0].startswith("image"):
-                files.append({ 'name': path.name, 'type': 'image'})
+        if guess[0] and guess[0].startswith("image"):
+            files.append({ 'name': path.name, 'type': 'image'})
         else:
+            if path.name == "README.md":
+                post = frontmatter.load(path)
+                readme = markdown.markdown(post.content)
+                if 'title' in post.metadata:
+                    title = post.metadata['title']
+                continue
             try:
                 files.append({
                     'name': path.name,
@@ -41,7 +51,7 @@ for dir in dirs:
             except:
                 print("Failed to read", path.name)
 
-    html = template.render(name=full_name, files=files)
+    html = template.render(name=full_name, files=files, readme=readme, title=title)
     
     index = output_dir.joinpath("index.html")
     index.write_text(html)
