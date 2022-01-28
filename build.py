@@ -61,7 +61,7 @@ class Page:
 
         for source in self.versions:
             for target in self.versions:
-                process = subprocess.run(['diff', '-u', source.dir, target.dir], 
+                process = subprocess.run(['diff', '-u', target.dir, source.dir], 
                          stdout=subprocess.PIPE, 
                          universal_newlines=True)
 
