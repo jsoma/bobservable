@@ -2,10 +2,23 @@
 <html>
   <head>
     <title>{{name}}</title>
-    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../../style.css">
 </head>
   <body>
     <div class="container">
+      {% if version_names and version_names|length > 1 %}
+        <p>
+          Version: <select id="version-selector">
+          {% for v in version_names %}
+            {% if v == version_name %}<option selected>{% else %}<option>{% endif %}
+              {{ v }}
+            </option>
+          {% endfor %}
+        </select>
+        <a href="../diff">Compare versions</a>
+    </p>
+      {% endif %}
+
       <h1>
         {% if title %}
           {{ title }}
@@ -36,6 +49,17 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
     <script>
       hljs.highlightAll();
+    </script>
+    <script>
+      function changeVersion(target) {
+        const url = `/{{ name }}/${target}/`;
+        window.location.href = url;
+      }
+
+      const versionSelector = document.querySelector("#version-selector")
+      versionSelector.addEventListener('change', () => {
+        changeVersion(versionSelector.value);
+      })
     </script>
   </body>
 </html>
