@@ -1,0 +1,53 @@
+diff -u content/@tezzutezzu/world-history-timeline/v6.7.0/index.html content/@tezzutezzu/world-history-timeline/v5.13.0/index.html
+--- content/@tezzutezzu/world-history-timeline/v6.7.0/index.html	2022-01-28 19:06:07.863760285 +0000
++++ content/@tezzutezzu/world-history-timeline/v5.13.0/index.html	2022-01-28 19:06:07.863760285 +0000
+@@ -1,4 +1,4 @@
+ <div id="chart"></div>
+-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.7.0/d3.min.js"></script>
++<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.13.0/d3.min.js"></script>
+ <link rel="stylesheet" href="style.css">
+ <script src="script.js"></script>
+\ No newline at end of file
+diff -u content/@tezzutezzu/world-history-timeline/v6.7.0/script.js content/@tezzutezzu/world-history-timeline/v5.13.0/script.js
+--- content/@tezzutezzu/world-history-timeline/v6.7.0/script.js	2022-01-28 19:06:07.863760285 +0000
++++ content/@tezzutezzu/world-history-timeline/v5.13.0/script.js	2022-01-28 19:06:07.863760285 +0000
+@@ -93,24 +93,32 @@
+   yPositionScale.domain(d3.range(datapoints.length));
+ 
+   const dataByTimeline = d3
+-    .group(datapoints, d => d.timeline);
++    .nest()
++    .key((d) => d.timeline)
++    .entries(datapoints);
+ 
+   const dataByRegion = d3
+-    .group(datapoints, d => d.region);
+-
++    .nest()
++    .key((d) => d.region)
++    .entries(datapoints);
++  
+   const regions = d3
+-    .group(datapoints, d => d.region)
+-    .keys()
++    .nest()
++    .key((d) => d.region)
++    .entries(datapoints)
++    .map((d) => d.key);
+ 
+   colorScale.domain(regions);
+ 
+-  const timelines = dataByTimeline.keys()
++  const timelines = dataByTimeline.map((d) => d.key);
+ 
+   let filteredData;
+   filteredData = [].concat.apply(
+     [],
+-    [...dataByRegion.values()]
++    dataByRegion.map((d) => d.values)
+   );
++  console.log(dataByRegion.map((d) => d.values))
++  console.log(filteredData)
+ 
+   filteredData.forEach((d) => (d.color = d3.color(colorScale(d.region))));
+ 

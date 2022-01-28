@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/diff2html/bundles/css/diff2html.min.css" />
+        
+        <!-- Javascripts -->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/diff2html/bundles/js/diff2html-ui.min.js"></script>
+    </head>
+    <body>
+        <p>
+            <a href="..">Back</a>
+        </p>
+        <p>
+            Source:
+          <select id="target">
+            
+              <option>
+                v7.3.0
+              </option>
+            
+              <option>
+                v6.7.0
+              </option>
+            
+              <option>
+                v5.13.0
+              </option>
+            
+              <option>
+                v4.13.0
+              </option>
+            
+              <option>
+                v3.5.17
+              </option>
+            
+          </select>
+  
+        Target:
+          <select id="source">
+            
+              <option>
+                v7.3.0
+              </option>
+            
+              <option>
+                v6.7.0
+              </option>
+            
+              <option>
+                v5.13.0
+              </option>
+            
+              <option>
+                v4.13.0
+              </option>
+            
+              <option>
+                v3.5.17
+              </option>
+            
+          </select>
+        </p>
+          
+        <div id="diff">
+
+        </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        function updateDiff() {
+            const filename = `${source.value}-${target.value}.diff`
+            console.log('getting', filename)
+            fetch(filename)
+                .then(response => response.text())
+                .then(diffString => {
+                    console.log('string is', diffString);
+                    const targetElement = document.getElementById('diff');
+                    targetElement.innerHTML = "";
+                    const configuration = { drawFileList: true, matching: 'lines', outputFormat: 'side-by-side' };
+                    const diff2htmlUi = new Diff2HtmlUI(targetElement, diffString, configuration);
+                    diff2htmlUi.draw();
+                })
+        }
+
+        const source = document.querySelector("#source")
+        const target = document.querySelector("#target")
+
+        source.addEventListener('change', updateDiff)
+        target.addEventListener('change', updateDiff)
+        updateDiff()
+    });
+</script>
+    </body>
+</html>
