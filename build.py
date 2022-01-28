@@ -47,9 +47,11 @@ class Page:
         latest_version = self.versions[0]
 
         latest_path = self.render_dir.joinpath('latest')
-        latest_path.symlink_to(latest_version.version_name, target_is_directory=True)
 
-        self.render_dir.joinpath("index.html").write_text("""
+        # latest_path.symlink_to(latest_version.version_name, target_is_directory=True)
+        shutil.copytree(latest_version.render_dir, latest_path)
+
+        self.render_dir.joinpath("index.html").write_text(f"""
         <meta http-equiv="refresh" content="0; url=./latest" />
         """)
     

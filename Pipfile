@@ -8,6 +8,7 @@ natsort = "*"
 jinja2 = "*"
 markdown = "*"
 python-frontmatter = "*"
+ghp-import = "*"
 
 [dev-packages]
 
